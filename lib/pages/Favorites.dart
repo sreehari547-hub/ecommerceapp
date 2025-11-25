@@ -1,4 +1,4 @@
-import 'package:ecommerceapp/data/Appdata.dart';
+import 'package:ecommerceapp/data/AppData.dart';
 import 'package:ecommerceapp/home/Homepage.dart';
 import 'package:ecommerceapp/pages/cartpage.dart';
 import 'package:ecommerceapp/pages/profile.dart';
@@ -42,7 +42,7 @@ void addToCart(Product product) {
   @override
   Widget build(BuildContext context) {
      final appData = Provider.of<AppData>(context);
-    final wishlist = appData.wishlist;
+    final wishlist = appData.getWishlistItems();
     
     return Scaffold(body: wishlist.isEmpty
         ? const Center(
@@ -91,7 +91,7 @@ void addToCart(Product product) {
                         ),
                         IconButton(onPressed: (){
                           final appData = Provider.of<AppData>(context, listen: false);
-                          appData.removeFromWishlist(product);
+                          appData.toggleFavorite(product);
                           ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('${product.name} removed from favorites')),
                              );
@@ -109,15 +109,19 @@ void addToCart(Product product) {
   onTap: (index) {
     if (index==0) {
       Navigator.push(context, MaterialPageRoute(builder: (context)=>Homepage()));
+
     }
      if (index==1) {
     Navigator.push(context, MaterialPageRoute(builder: (context)=>Favorites()));
+
     }
     else if(index==2){
        Navigator.push(context, MaterialPageRoute(builder: (context)=>Cartpage()));
+
     }
     else if(index==3){
        Navigator.push(context, MaterialPageRoute(builder: (context)=>Profile()));
+
     }
     
   },

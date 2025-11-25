@@ -1,11 +1,7 @@
-import 'dart:developer';
-
-
 import 'package:ecommerceapp/Login/Signup.dart';
 import 'package:ecommerceapp/Session/Sessionmanager.dart';
 import 'package:ecommerceapp/home/Homepage.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
@@ -56,8 +52,8 @@ class _LoginpageState extends State<Loginpage> {
 
                 if (emailcontroller.text==savedemail&&passwordcontroller.text==savedpassword) {
                   await SessionManager.saveLoginSession(
-          useremail: savedemail!,
-          password: savedpassword!,
+          useremail: emailcontroller.text,
+          password: passwordcontroller.text,
         );
         if (!mounted) return;
 

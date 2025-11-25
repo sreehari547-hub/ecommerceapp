@@ -1,12 +1,15 @@
 import 'package:ecommerceapp/Splashscreen/Splashscreen.dart';
-import 'package:ecommerceapp/data/Appdata.dart';
+import 'package:ecommerceapp/data/AppData.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
-
-void main(){
-  runApp(ChangeNotifierProvider(create: (_) => AppData(),child: MyApp()));
+void main() async{
+  runApp(
+   MyApp()
+  
+    );
+  
 }
 
 class MyApp extends StatelessWidget {
@@ -14,9 +17,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Splashscreen(),
+    return MultiProvider(providers: [ChangeNotifierProvider(create: (_) => AppData()
+    )],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Splashscreen(),
+      ),
     );
   }
 }

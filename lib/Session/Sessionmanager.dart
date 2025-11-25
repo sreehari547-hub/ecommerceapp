@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:flutter/material.dart';
  import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -11,12 +10,19 @@ import 'package:flutter/material.dart';
     static const String _keyPassword='password'; 
     static const String _keyUserMobile='userMobile'; 
     static Future<Map<String,String?>> getUserSession() async{ try { final Sharedpref= await SharedPreferences.getInstance(); 
-    return { 'useremail':Sharedpref.getString(_keyUserEmail), 'userpassword': Sharedpref.getString(_keyPassword), };
+    return { 
+      'useremail':Sharedpref.getString(_keyUserEmail), 
+      'userpassword': Sharedpref.getString(_keyPassword), 
+      'userFname': Sharedpref.getString(_keyUserFname),
+      'userLname': Sharedpref.getString(_keyUserLname),
+      'userMobile': Sharedpref.getString(_keyUserMobile),
+      };
      } catch (e) { log('Error while getting datas $e'); 
      return {}; 
      } } 
      static Future<bool> saveCreateAccountSession({ required String userMobile, required String password, required String userFname, required String userLname, required String useremail, }) async{ 
-      try { SharedPreferences Sharedpref=await SharedPreferences.getInstance(); 
+      try { 
+        SharedPreferences Sharedpref=await SharedPreferences.getInstance(); 
       await Sharedpref.setString(_keyUserFname, userFname); 
       await Sharedpref.setString(_keyUserLname, userLname); 
       await Sharedpref.setString(_keyUserEmail, useremail); 
@@ -26,13 +32,15 @@ import 'package:flutter/material.dart';
       } catch (e) { 
         log('Error saving create account session $e'); 
         return false; } } 
-        static Future<bool> saveLoginSession({ required String password, String? useremail, }) async{ 
-          try { SharedPreferences Sharedpref=await SharedPreferences.getInstance();
+        static Future<bool> saveLoginSession({ required String password,required String useremail, }) async{ 
+          try { 
+            SharedPreferences Sharedpref=await SharedPreferences.getInstance();
            await Sharedpref.setBool(_keyIsLoggedin, true); 
            await Sharedpref.setString(_keyPassword, password); 
-           if (useremail!=null) { 
+
+           
             await Sharedpref.setString(_keyUserEmail, useremail); 
-           } 
+           
            return true; 
            } catch (e) { 
             log('Error saving login session: $e'); 
@@ -44,7 +52,9 @@ import 'package:flutter/material.dart';
                 return sharedPreferences.getBool(_keyIsLoggedin)?? false; 
               } catch (e) { 
                 log('Error while checking login status $e');
-                 return false; } } 
+                 return false; 
+                 } 
+                 } 
                  static Future<bool> sessionclear() async{ 
                   try { SharedPreferences sharedPreferences=await SharedPreferences.getInstance(); 
                   await sharedPreferences.remove(_keyIsLoggedin);
@@ -58,4 +68,22 @@ import 'package:flutter/material.dart';
                       return false; 
                       } 
                       } 
+
+              static Future<bool> isLoggedInFully() async {
+  try {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool flag = prefs.getBool(_keyIsLoggedin) ?? false;
+    String? email = prefs.getString(_keyUserEmail);
+    String? password = prefs.getString(_keyPassword);
+    return flag && email != null && password != null;
+  } catch (e) {
+    log('Error checking full login status: $e');
+    return false;
+  }
+  
+}
+
+
+
                       }
+                      
